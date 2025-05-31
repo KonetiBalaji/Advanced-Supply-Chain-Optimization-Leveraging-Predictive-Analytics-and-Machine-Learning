@@ -6,6 +6,4 @@
    - Perform initial data cleaning and generate basic visualizations and summary statistics.
 3. **Proceed with data preprocessing** once the exploration is done, using the `src/data_preprocessing.py` script.
 
-You can now push this structure and **README.md** to your GitHub repo and keep updating it as you progress with each phase.
 
-Let me know when you're ready to start, or if you need help with the initial data exploration code!

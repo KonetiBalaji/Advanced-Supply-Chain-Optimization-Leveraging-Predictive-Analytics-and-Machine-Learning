@@ -1,93 +1,185 @@
-# Supply Chain Optimization: Leveraging Predictive Analytics and Machine Learning with DataCo SMART Dataset
+# Advanced Supply Chain Optimization
 
-## Project Overview
+This project implements an advanced supply chain optimization system leveraging predictive analytics and machine learning. It uses the DataCo SMART dataset to optimize supply chain operations, including demand forecasting, inventory management, and risk analysis.
 
-This project aims to optimize supply chain operations using predictive analytics and machine learning techniques. The primary goal is to forecast demand, improve inventory management, and minimize logistics costs. The project uses the **DataCo SMART Supply Chain Dataset**, which contains historical data on product demand, inventory levels, transportation costs, and other supply chain metrics.
+## Features
 
-### Key Objectives:
-1. **Data Exploration**: Understand the dataset structure, clean the data, and analyze trends.
-2. **Demand Forecasting**: Build models to predict future demand using time series analysis and machine learning techniques.
-3. **Supply Chain Optimization**: Use optimization techniques to minimize costs and improve efficiency across the supply chain.
+- **Demand Forecasting**
+  - SARIMA-based time series forecasting
+  - Seasonal pattern analysis
+  - Demand volatility handling
+
+- **Supply Chain Optimization**
+  - Multi-factory production planning
+  - Multi-customer distribution optimization
+  - Inventory level optimization
+  - Cost minimization (production, shipping, storage)
+
+- **Risk Analysis**
+  - Supply chain risk identification
+  - Risk scoring and prioritization
+  - Mitigation strategy recommendations
+  - Risk matrix visualization
+
+- **Scenario Analysis**
+  - What-if analysis for different scenarios
+  - Demand variation analysis
+  - Cost change impact assessment
+  - Capacity reduction analysis
 
 ## Project Structure
 
-### 1. **Data Exploration**:
-   - Load and explore the raw data files.
-   - Handle missing values, duplicates, and outliers.
-   - Generate summary statistics and visualizations for an initial understanding of the data.
+```
+├── src/
+│   ├── main.py                 # Main execution script
+│   ├── demand_forecasting.py   # Demand forecasting module
+│   ├── supply_chain_optimization.py  # Optimization module
+│   ├── risk_analysis.py        # Risk analysis module
+│   ├── scenario_analysis.py    # Scenario analysis module
+│   └── visualization.py        # Visualization module
+├── data/
+│   └── dataco_smart.csv       # Dataset file
+├── requirements.txt           # Project dependencies
+└── README.md                 # Project documentation
+```
 
-### 2. **Data Preprocessing**:
-   - Clean and preprocess the data for machine learning models.
-   - Perform feature engineering and encode categorical variables.
-   - Scale numerical features and handle imbalances.
+## Setup
 
-### 3. **Demand Forecasting**:
-   - Build and evaluate demand forecasting models using:
-     - **ARIMA** (AutoRegressive Integrated Moving Average)
-     - **Prophet** (by Facebook)
-     - **LSTM** (Long Short-Term Memory for time series)
-
-### 4. **Supply Chain Optimization**:
-   - Apply **Linear Programming (LP)** or **Integer Linear Programming (ILP)** to minimize transportation, inventory, and production costs.
-   - Use **PuLP**, **SciPy**, or **Google OR-Tools** for optimization modeling.
-
-### 5. **Model Evaluation and Results**:
-   - Evaluate model performance using appropriate metrics (e.g., accuracy, RMSE for forecasting).
-   - Visualize results and present findings in the form of graphs, charts, and reports.
-
-## Requirements
-
-- Python 3.7+
-- Install dependencies:
-  ```bash
-  pip install -r requirements.txt
-
-## Project File Structure
-Supply_Chain_Optimization/
-│
-├── data/                            # Raw data files (e.g., the DataCo dataset)
-│   ├── DataCoSupplyChainDataset.csv
-│   ├── DescriptionDataCoSupplyChain.csv
-│   └── tokenized_access_logs.csv
-│
-├── src/                             # Python scripts for exploration, modeling, and optimization
-│   ├── data_exploration.py          # Data exploration and initial analysis
-│   ├── data_preprocessing.py        # Data cleaning and preprocessing
-│   ├── demand_forecasting.py        # Demand forecasting models (ARIMA, Prophet, LSTM)
-│   └── supply_chain_optimization.py # Optimization models (LP, ILP)
-│
-├── output/                          # Results and visualizations
-│   ├── figures/                     # Graphs, charts, and other visualizations
-│   ├── models/                      # Saved machine learning models
-│   └── results/                     # Analysis outputs and reports
-│
-├── requirements.txt                 # List of Python dependencies
-├── README.md                        # Project overview, steps, and documentation
-└── LICENSE                          # MIT License (or whichever license you choose)
-
-
-Setup
 1. Clone the repository:
-git clone https://github.com/KonetiBalaji/Advanced-Supply-Chain-Optimization-Leveraging-Predictive-Analytics-and-Machine-Learning.git
+```bash
+git clone <repository-url>
+cd supply-chain-optimization
+```
 
-2. Install dependencies:
+2. Create a virtual environment (recommended):
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install dependencies:
+```bash
 pip install -r requirements.txt
+```
 
-3. Data Preprocessing:
-Place the raw data files in the data/ directory.
-Run the preprocessing script (src/data_preprocessing.py) to clean and prepare the data.
+## Usage
 
-4. Start with Data Exploration:
-Run the src/data_exploration.py script to load and explore the data.
+1. Run the main optimization script:
+```bash
+python src/main.py
+```
 
-5. Demand Forecasting and Optimization:
-Once data is ready, run src/demand_forecasting.py for building and evaluating the forecasting models.
-Run src/supply_chain_optimization.py for applying optimization models.
+2. The script will:
+   - Load and preprocess the data
+   - Generate demand forecasts
+   - Optimize the supply chain
+   - Perform risk analysis
+   - Generate visualizations
 
-Results
-Demand forecasting models will be trained and tested using historical data to predict future demand.
-Supply chain optimization will be implemented to minimize costs while maintaining efficiency.
+## Configuration
 
-Future Work
-Integrate real-time data sources for more accurate predictions.
-Implement a dashboard for interactive visualization of supply chain operations.
+The optimization parameters can be adjusted in `src/main.py`:
+
+- Production costs
+- Shipping costs
+- Storage costs
+- Production capacity
+- Storage capacity
+- Minimum inventory levels
+- Safety stock factors
+
+### Parameter Tuning Guide
+
+To handle infeasible optimization problems, you can adjust these key parameters:
+
+1. **Demand Scaling**
+   ```python
+   # Scale demand to 70% of total capacity for feasibility
+   total_capacity = sum(production_capacity)
+   total_demand = sum(demand)
+   if total_demand > total_capacity * 0.7:
+       scale_factor = (total_capacity * 0.7) / total_demand
+       demand = [d * scale_factor for d in demand]
+   ```
+
+2. **Constraint Parameters**
+   ```python
+   optimizer = SupplyChainOptimizer(
+       min_inventory_level=0.01,      # Minimum inventory (1% of capacity)
+       max_factory_utilization=0.95,   # Maximum factory utilization (95%)
+       safety_stock_factor=0.05       # Safety stock (5% of demand)
+   )
+   ```
+
+3. **Recommended Parameter Ranges**
+   - `min_inventory_level`: 0.01 to 0.05
+   - `max_factory_utilization`: 0.90 to 0.95
+   - `safety_stock_factor`: 0.05 to 0.10
+   - Demand scaling: 0.70 to 0.80 of total capacity
+
+### Troubleshooting Infeasible Problems
+
+If you encounter infeasible optimization problems:
+
+1. **Check Demand vs. Capacity**
+   - Ensure total demand is less than 70% of total capacity
+   - Scale demand if necessary
+   - Verify capacity constraints are realistic
+
+2. **Adjust Constraints**
+   - Reduce minimum inventory levels
+   - Increase maximum factory utilization
+   - Lower safety stock requirements
+   - Relax production balance constraints
+
+3. **Monitor Logs**
+   - Check warning messages about demand scaling
+   - Review constraint violations
+   - Verify parameter values
+
+4. **Common Solutions**
+   - Scale down demand
+   - Increase capacity
+   - Relax minimum production requirements
+   - Adjust inventory constraints
+   - Modify safety stock levels
+
+## Output
+
+The system generates:
+- Optimization results
+- Cost breakdowns
+- Production plans
+- Inventory levels
+- Risk analysis reports
+- Scenario analysis summaries
+- Interactive visualizations
+
+## Dependencies
+
+- Python 3.8+
+- pandas
+- numpy
+- pulp
+- matplotlib
+- seaborn
+- statsmodels
+- scikit-learn
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- DataCo SMART dataset
+- PuLP optimization library
+- Statsmodels for time series analysis
